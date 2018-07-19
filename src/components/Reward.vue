@@ -70,18 +70,32 @@
           return false;
         }
         if(this.navigator==2){
+          tp.eosTokenTransfer({
+            from: sessionStorage.getItem('userName'), // 必填
+            to: this.config.faith, // 必填
+            amount: this.amount, // 必填
+            tokenName: "EOS",
+            memo:"2#"+this.data.id, // 选填
+            precision: 4,
+            contract: this.config.eosio,
+          }).then(res=>{
+            let data = JSON.parse(result);
+            this.$emit('rewardHide',{
+              type:'loading',
+              content:this.$t('home.promt9')
+            });
+            let setTime = setTimeout(function () {
+              this.$emit('rewardHide',{
+                type:'close'
+              });
+              this.$emit('rewardHide',{
+                type:'success',
+                content:_this.$t('home.promt8')
+              });
+            },2000)
 
+          })
 
-          var params = {
-             from: "joetothemoon", // 必填
-              to: "keytothemoon", // 必填
-              amount: this.amount, // 必填
-              tokenName: "EOS",
-              memo:"2#"+this.data.id, // 选填
-              precision: 4,
-              contract: this.config.eosio,
-          }
-          window.TPJSBrigeClient.callMessage("eosTokenTransfer", JSON.stringify(params), this.eosTokenTransferCallback);
           return false;
         }
         this.$emit('rewardHide',{
@@ -130,27 +144,6 @@
         data.address = this.config.faith;
         window.location = 'tp://mytokenpocket.vip/path?data=' + JSON.stringify(data)
       }
-    },
-    eosTokenTransferCallback(result) {
-      this.$emit('rewardHide',{
-        type:'loading',
-        content:this.$t('home.promt9')
-      });
-      let setTime = setTimeout(function () {
-        this.$emit('rewardHide',{
-          type:'close'
-        });
-        this.$emit('rewardHide',{
-          type:'success',
-          content:_this.$t('home.promt8')
-        });
-      },2000)
-      var data = JSON.parse(result);
-      // {result: true, data: 'txhash' }
-    },
-    eosTokenTransfer(){
-      alert(this.amount)
-
     }
   }
 

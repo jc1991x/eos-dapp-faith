@@ -72,6 +72,7 @@
         </li>
 
       </ul>
+      <div>{{result}}   00</div>
       <div v-if="list.length==0" class="empty">
         <i class="iconfont icon-empty"></i>
         <p>{{$t('home.noData')}}</p>
@@ -110,6 +111,7 @@
     import PromtWallet from '@/components/PromtWallet'
     import Guidance from '@/components/Guidance'
     import config from '@/assets/js/config'
+    import tp from 'tp-js-sdk'
     import EOS from 'eosjs'
     import moment from 'moment'
     export default {
@@ -165,7 +167,8 @@
                 balance:'',
                 faith:''
               },
-              eosTotal:''
+              eosTotal:'',
+              result:''
             }
         },
         computed:{
@@ -202,7 +205,9 @@
             this.navigator = -1;
           }else if(window.TPJSBrigeClient){
             //android app
-            //alert(0)
+            tp.getWalletList('eos').then(res=>{
+              sessionStorage.setItem('userName',res.wallets.eos[0].name);
+            })
             this.navigator = 2;
           }else if(window.webkit){
             //ios app
@@ -229,6 +234,8 @@
         },
         methods: {
           publish(){
+
+
             if(!this.scatter&&this.navigator==1){
               this.openWallet();
               return false;
@@ -479,29 +486,39 @@
           },
           androidAdd(data) {
             this.state.bol = false;
+            let _this = this;
            let str=data.content,str1=data.name,memo = "1#"+str1.replace(/#/g,' ')+'#'+str.replace(/#/g,' ');
-            alert(memo)
-            let params = {
-              from: "joetothemoon", // 必填
-              to: "keytothemoon", // 必填
+            tp.eosTokenTransfer({
+              from: sessionStorage.getItem('userName'), // 必填
+              to: config.faith, // 必填
               amount: config.amount1, // 必填
               tokenName: "EOS",
               memo:memo, // 选填
               precision: 4,
               contract: config.eosio,
-            }
-            window.TPJSBrigeClient.callMessage("eosTokenTransfer", JSON.stringify(params), this.eosTokenTransferCallback);
-          },
-          eosTokenTransferCallback(){
-            let setTime = setTimeout(function () {
-              this.rewardHide({
-                type: 'success',
-                content: _this.$t('home.publishIt'),
-                transactionId:t.transaction_id
-              })
-            },2000)
-          }
+            }).then(res=>{
+              let data = JSON.parse(result);
+              this.$emit('rewardHide',{
+                type:'loading',
+                content:this.$t('home.promt9')
+              });
+              let setTime = setTimeout(function () {
+                _this.state.bol = false;
+                _this.$refs.published.nameBol=false;
+                _this.$refs.published.contentBol=false;
+                _this.rewardHide({
+                  type: 'success',
+                  content: _this.$t('home.publishIt'),
+                  transactionId:t.transaction_id
+                })
+                _this.global('addfaith')
+              },2000)
 
+            })
+
+
+
+          },
         }
     }
 
@@ -775,6 +792,7 @@
       color:rgba(158,157,157,1);
       font-size:12px;
       margin-left: 10px;
+      line-height: 15px;
 
     }
     .home .give,.home .money {
