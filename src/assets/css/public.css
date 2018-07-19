@@ -1,0 +1,69 @@
+*{
+  font-family: MicrosoftYaHei;
+}
+.left{
+  float: left;
+}
+.right{
+  float: right;
+}
+.mask{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 10;
+}
+.borderActive{
+  border: 1px solid red!important;
+}
+input.borderActive::-webkit-input-placeholder,textarea.borderActive::-webkit-input-placeholder{
+  color: red!important;
+}
+.fade-enter-active,.fade-leave-active,.reward-enter-active,.reward-leave-active,.published-enter-active,.published-leave-active,
+.wallet-enter-active,.wallet-leave-active{
+  transition: 1s all ease;
+}
+.fade-enter-active .main,.reward-enter-active .main,.published-enter-active .main,
+.wallet-enter-active .main{
+  top: 50%!important;
+}
+.fade-leave-active{
+  opacity: 0;
+  top: -380px!important;
+}
+.reward-leave-active, .published-leave-active{
+  opacity: 0;
+  top: -210px!important;
+}
+.wallet-leave-active{
+  opacity: 0;
+  top: -210px!important;
+}
+
+.fade-enter,.fade-leave,.reward-enter,.reward-leave,.published-enter,.reward-leave,
+.wallet-enter,.wallet-leave{
+  opacity: 0;
+  top: -380px!important;
+}
+
+
+
+.select-enter-active,.select-leave-active{
+  transition: 0.8s all ease;
+}
+.select-enter-active{
+  /*变化成什么样->当元素出来时（显示）*/
+  height: 192px;
+}
+.select-leave-active{
+  /*变化成什么样->当元素离开时（消失）*/
+  height:0px!important;
+}
+
+.select-enter,.select-leave {
+  /*初始状态*/
+  height: 0px!important;
+}
