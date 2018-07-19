@@ -6,7 +6,7 @@
       <img src="../assets/images/mobile.png"/>
       <div class="bannarFont">
         <p>{{$t('home.title1')}}</p>
-        <p>{{$t('home.blurb1')}}</p>
+        <p :class="{zhFont:$store.state.locale=='zh-CN'}">{{$t('home.blurb1')}}</p>
         <button @click="publish">{{$t('home.publish')}}</button>
       </div>
       <!--<button @click="transfer">转账</button>-->
@@ -631,6 +631,9 @@
 
       padding-top: 20px;
     }
+    .home .zhFont{
+      font-size: 23px!important;
+    }
   }
   @media screen and (max-width: 700px){
     .home .bannar img:nth-child(1){
@@ -674,6 +677,9 @@
     .home .bannarFont p:nth-child(2){
       font-size: 30px;
       padding-top: 15px;
+    }
+    .home .zhFont{
+      font-size: 23px!important;
     }
 
   }

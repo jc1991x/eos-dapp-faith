@@ -132,8 +132,10 @@
           },
           choseLang(){
             this.langBol = !this.langBol;
+            this.$store.state.locale = this.langBol==true?'zh-CN':'en-US';
             localStorage.setItem('lang',this.langBol==true?'zh-CN':'en-US');
             this.$i18n.locale = this.langBol==true?'zh-CN':'en-US';
+
           }
 
         }
