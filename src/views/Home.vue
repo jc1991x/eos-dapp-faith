@@ -509,7 +509,7 @@
                 _this.rewardHide({
                   type: 'success',
                   content: _this.$t('home.publishIt'),
-                  transactionId:t.transaction_id
+                  transactionId:result.transaction_id
                 })
                 _this.global('addfaith')
               },2000)
