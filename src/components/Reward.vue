@@ -69,7 +69,7 @@
           this.openclient();
           return false;
         }
-        if(this.navigator==2){
+        if(this.navigator==2||this.navigator==3){
           tp.eosTokenTransfer({
             from: sessionStorage.getItem('userName'), // 必填
             to: this.config.faith, // 必填
@@ -98,6 +98,8 @@
 
           return false;
         }
+
+
         this.$emit('rewardHide',{
           type:'loading',
           content:this.$t('home.promt9')
@@ -135,10 +137,9 @@
         },5000)
       },
       openclient() {
-
         var data = new Object();
         data.type = 11;
-        data.token = "EOS";
+        data.token = this.config.symbol;
         data.memo = "2#"+this.data.id;
         data.amount =this.amount;
         data.address = this.config.faith;

@@ -1,5 +1,5 @@
 
-export  default{
+/*export  default{
   eosNetwork:{
     blockchain: 'eos',
     host: '120.27.237.92',
@@ -18,23 +18,24 @@ export  default{
   amount:"0.2000 EOS",
   amount1:"0.2000",
   symbol:'EOS'
-}
-/*export  default{
+}*/
+export  default{
   eosNetwork:{
     blockchain: 'eos',
     host: 'api.eosnewyork.io',
-    port: 80,
+    port: 443,
     chainId: "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906",
-    protocol: "http"
+    protocol: "https"
   },
   eosOptions:{
     broadcast: true,
     sign: true,
     chainId: "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906",
-    httpEndpoint: "https://api.eosnewyork.io:80"
+    httpEndpoint: "https://api.eosnewyork.io:443"
   },
   faith:"goldenfaith1",
   eosio:"eosio.token",
   amount:"0.2000 EOS",
+  amount1:"0.2000",
   symbol:'EOS'
-}*/
+}

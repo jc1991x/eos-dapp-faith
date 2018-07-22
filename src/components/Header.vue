@@ -71,6 +71,8 @@
             if(val){
               let newVal = val.split(' ');
               return parseFloat(newVal[0])
+            }else{
+              return 0
             }
           },
         },

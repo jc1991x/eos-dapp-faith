@@ -72,11 +72,10 @@
         </li>
 
       </ul>
-      <div>{{result}}   00</div>
-      <div v-if="list.length==0" class="empty">
+   <!--   <div v-if="list.length==0" class="empty">
         <i class="iconfont icon-empty"></i>
         <p>{{$t('home.noData')}}</p>
-      </div>
+      </div>-->
     </div>
 
     <div class="more" @click="more" v-if="list.length>0">
@@ -165,10 +164,9 @@
                 ram_usage:'',
                 cpu_weight:'',
                 balance:'',
-                faith:''
+                faith:0
               },
-              eosTotal:'',
-              result:''
+              eosTotal:''
             }
         },
         computed:{
@@ -202,6 +200,7 @@
         mounted: function () {
           let ua = window.navigator.userAgent.toLowerCase();
           if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+
             this.navigator = -1;
           }else if(window.TPJSBrigeClient){
             //android app
@@ -256,12 +255,14 @@
             if(data){
               this.publishedBol = false;
               if(this.navigator==0){
+
                 return false;
               }
-              if(this.navigator==2){
+              if(this.navigator==2||this.navigator==3){
                 this.androidAdd(data)
                 return false;
               }
+
               this.addfaith(data)
             }else{
               this.publishedBol = false;
@@ -457,8 +458,8 @@
               account_name: sessionStorage.getItem('userName')
             }).then(res=>{
               this.getInfoData.account_name=res.account_name;
-              this.getInfoData.ram_usage=res.ram_usage;
-              this.getInfoData.cpu_weight=res.cpu_weight;
+              this.getInfoData.ram_usage=(res.net_limit.available/res.ram_usage).toFixed(2  );
+              this.getInfoData.cpu_weight=res.cpu_limit.available;
 
             },res=>{
               console.log('err')
@@ -468,8 +469,10 @@
               account: sessionStorage.getItem('userName'),
               symbol: config.symbol
             }).then(res=>{
-               this.getInfoData.balance =(res[0].split(' '))[0];
-               console.log(this.getInfoData)
+
+
+               this.getInfoData.balance = res.length>0?(res[0].split(' '))[0]:0;
+
             },res=>{
               console.log(res)
             })
@@ -485,6 +488,7 @@
             })
           },
           androidAdd(data) {
+
             this.state.bol = false;
             let _this = this;
            let str=data.content,str1=data.name,memo = "1#"+str1.replace(/#/g,' ')+'#'+str.replace(/#/g,' ');
@@ -497,28 +501,11 @@
               precision: 4,
               contract: config.eosio,
             }).then(res=>{
-              let data = JSON.parse(result);
-              this.$emit('rewardHide',{
-                type:'loading',
-                content:this.$t('home.promt9')
-              });
-              let setTime = setTimeout(function () {
-                _this.state.bol = false;
-                _this.$refs.published.nameBol=false;
-                _this.$refs.published.contentBol=false;
-                _this.rewardHide({
-                  type: 'success',
-                  content: _this.$t('home.publishIt'),
-                  transactionId:result.transaction_id
-                })
-                _this.global('addfaith')
-              },2000)
+              this.eosTokenTransferCallback(res);
 
             })
 
-
-
-          },
+          }
         }
     }
 
